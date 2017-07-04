@@ -38,6 +38,7 @@ public class MovieGalleryPresenter implements MovieGalleryContract.Presenter {
 
     @Override
     public void getPopularMovies() {
+        view.showLoadingBar();
         getPopularMovies.setPage(page);
         getPopularMovies.execute(new DisposableObserver<MovieList>() {
 
@@ -68,6 +69,7 @@ public class MovieGalleryPresenter implements MovieGalleryContract.Presenter {
 
     @Override
     public void getTopRatedMovies() {
+        view.showLoadingBar();
         getTopRatedMovies.setPage(page);
         getTopRatedMovies.execute(new DisposableObserver<MovieList>() {
 

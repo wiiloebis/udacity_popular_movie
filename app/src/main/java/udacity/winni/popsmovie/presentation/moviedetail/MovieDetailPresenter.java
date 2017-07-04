@@ -27,6 +27,7 @@ public class MovieDetailPresenter implements MovieDetailContract.Presenter {
 
     @Override
     public void getMovieDetail(long movieId) {
+        view.showLoadingBar();
         getMovieDetail.setMovieId(movieId);
         getMovieDetail.execute(new DisposableObserver<Movie>() {
 
