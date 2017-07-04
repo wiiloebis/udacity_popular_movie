@@ -1,0 +1,14 @@
+<resources>
+    <string name="movie_detail">Movie Detail</string>
+    <string name="min">min</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="popular">Popular</string>
+    <string name="refresh">Refresh</string>
+    <string name="fetch_movie_detail_failed">Failed to get movie detail, please try again.</string>
+    <string name="fetch_movie_failed">Failed to movies, please try again.</string>
+    <string name="pop_movies_title">Popular Movies</string>
+    <string name="top_rated_movies_title">Top Rated Movies</string>
+    <string name="mark_as_favorite">Mark as\n favorite</string>
+    <string name="unmark_as_favorite">Unmark as\n favorite</string>
+    <string name="movies_is_empty">Movie list is empty</string>
+</resources>
