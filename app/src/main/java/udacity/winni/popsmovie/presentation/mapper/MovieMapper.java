@@ -26,6 +26,7 @@ public class MovieMapper {
             movieVM.setVoteAverage(movie.getVoteAverage());
             movieVM.setOverview(movie.getOverview());
             movieVM.setReleaseYear(Utils.getYearFromDate(movie.getReleaseDate()));
+            movieVM.setReleaseDate(Utils.formatReleaseDate(movie.getReleaseDate()));
         }
 
         return movieVM;

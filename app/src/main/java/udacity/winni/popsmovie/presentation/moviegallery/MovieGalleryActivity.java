@@ -186,7 +186,7 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
     @Override
     public void showLoadingBar() {
         if (progressDialog == null) {
-            progressDialog = new ProgressDialog(this);
+            progressDialog = new ProgressDialog(this, R.style.ProgressDialogTheme);
             progressDialog.setCancelable(false);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         }

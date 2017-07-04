@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -44,8 +45,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     @BindView(R.id.iv_movie_cover)
     ImageView ivMoviePoster;
 
-    @BindView(R.id.tv_release_year)
-    TextView tvReleaseYear;
+    @BindView(R.id.tv_release_date)
+    TextView tvReleaseDate;
 
     @BindView(R.id.tv_movie_duration)
     TextView tvMovieDuration;
@@ -151,15 +152,26 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         rlMovieDetailFailed.setVisibility(View.GONE);
         rlMovieDetailSuccess.setVisibility(View.VISIBLE);
         tvMovieTitle.setText(movieVM.getOriginalTitle());
-        tvReleaseYear.setText("" + movieVM.getReleaseYear());
+        displayReleaseDate(movieVM.getReleaseDate());
         tvMovieDuration.setText(movieVM.getRuntime() + getString(R.string.min));
         tvMovieOverview.setText(movieVM.getOverview());
+        displayPopularity(movieVM.getVoteAverage());
+        displayPoster(movieVM.getPoster());
+    }
+
+    private void displayReleaseDate(String releaseDate) {
+        if (TextUtils.isEmpty(releaseDate)) {
+            releaseDate = getString(R.string.no_date);
+        }
+        tvReleaseDate.setText(releaseDate);
+    }
+
+    private void displayPopularity(double voteAverage) {
         StringBuffer popularityStringBuffer = new StringBuffer("");
-        popularityStringBuffer.append(String.format("%.1f", movieVM.getVoteAverage()));
+        popularityStringBuffer.append(String.format("%.1f", voteAverage));
         popularityStringBuffer.append("/");
         popularityStringBuffer.append(DIV_FACTOR);
         tvRating.setText(popularityStringBuffer.toString());
-        displayPoster(movieVM.getPoster());
     }
 
     private void displayPoster(String posterPath) {
@@ -178,7 +190,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     @Override
     public void showLoadingBar() {
         if (progressDialog == null) {
-            progressDialog = new ProgressDialog(this);
+            progressDialog = new ProgressDialog(this, R.style.ProgressDialogTheme);
             progressDialog.setCancelable(false);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         }
