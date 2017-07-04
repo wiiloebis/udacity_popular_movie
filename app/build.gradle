@@ -1,0 +1,80 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        applicationId rootProject.ext.applicationId
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        development {
+            applicationIdSuffix ".dev"
+            resValue "string", "app_name", "PopsMovie"
+            buildConfigField "String", "SERVER_URL",
+                    String.format("\"%s\"", movieDbUrl)
+            buildConfigField "String", "IMAGE_SERVER_URL",
+                    String.format("\"%s\"", movieDbImageUrl)
+            buildConfigField "String", "API_KEY",
+                    String.format("\"%s\"", apiKey)
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    def appDependencies = rootProject.ext.appDependencies
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile appDependencies.appCompat
+    compile appDependencies.supportDesign
+    compile appDependencies.recyclerView
+    compile appDependencies.cardView
+    compile appDependencies.picasso
+    compile appDependencies.constrainLayout
+    compile appDependencies.rxJava
+    compile appDependencies.rxAndroid
+    compile appDependencies.rxBinding
+    compile appDependencies.multiDex
+
+    provided appDependencies.javaxAnnotation
+    apt appDependencies.daggerCompiler
+    compile appDependencies.dagger
+
+    compile appDependencies.retrofit
+    compile appDependencies.retrofitAdapter
+    compile appDependencies.retrofitConverter
+    compile appDependencies.retrofitLogger
+
+    compile appDependencies.butterKnife
+    apt appDependencies.butterknifeCompiler
+
+    testCompile testDependencies.junit
+}

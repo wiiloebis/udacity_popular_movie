@@ -1,0 +1,80 @@
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+ext {
+
+    //app
+    daggerVersion = '2.9'
+    butterKnifeVersion = '8.4.0'
+    rxJavaVersion = '2.0.1'
+    rxAndroidVersion = '2.0.1'
+    rxBindingVersion = '2.0.0'
+    javaxAnnotationVersion = '1.0'
+    loggingInterceptorVersion = '3.6.0'
+    androidAnnotationsVersion = '21.0.3'
+    retrofitVersion = '2.2.0'
+    appCompatVersion = '25.3.1'
+    systembartintVersion = '1.0.3'
+    swipeLayoutVersion = '1.2.0@aar'
+    picassoVersion = '2.5.2'
+    constrainLayoutVersion = '1.0.2'
+
+    //Development
+    crashlyticVersion = '2.6.7'
+    leakCanaryVersion = '1.5'
+    multidexVersion = '1.0.0'
+
+    //Testing
+    robolectricVersion = '3.0'
+    jUnitVersion = '4.12'
+    assertJVersion = '1.7.1'
+    mockitoVersion = '1.9.5'
+    dexmakerVersion = '1.0'
+    espressoVersion = '2.0'
+    testingSupportLibVersion = '0.1'
+    espressoVersion = '2.2.2'
+    testRunnerVersion = '0.5'
+    uiAutomatorVersion = '2.1.2'
+
+    appDependencies = [
+            daggerCompiler     : "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger             : "com.google.dagger:dagger:${daggerVersion}",
+            butterKnife        : "com.jakewharton:butterknife:${butterKnifeVersion}",
+            butterknifeCompiler: "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
+            recyclerView       : "com.android.support:recyclerview-v7:${appCompatVersion}",
+            cardView           : "com.android.support:cardview-v7:${appCompatVersion}",
+            rxJava             : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
+            rxAndroid          : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
+            rxBinding          : "com.jakewharton.rxbinding2:rxbinding:${rxBindingVersion}",
+            javaxAnnotation    : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            retrofit           : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+            retrofitAdapter    : "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}",
+            retrofitConverter  : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
+            retrofitLogger     : "com.squareup.okhttp3:logging-interceptor:${loggingInterceptorVersion}",
+            mockito            : "org.mockito:mockito-core:${mockitoVersion}",
+            dexmaker           : "com.google.dexmaker:dexmaker:${dexmakerVersion}",
+            dexmakerMockito    : "com.google.dexmaker:dexmaker-mockito:${dexmakerVersion}",
+            espresso           : "com.android.support.test.espresso:espresso-core:${espressoVersion}",
+            testingSupportLib  : "com.android.support.test:testing-support-lib:${testingSupportLibVersion}",
+            appCompat          : "com.android.support:appcompat-v7:${appCompatVersion}",
+            supportDesign      : "com.android.support:design:${appCompatVersion}",
+            multiDex           : "com.android.support:multidex:${multidexVersion}",
+            systembartint      : "com.readystatesoftware.systembartint:systembartint:${systembartintVersion}",
+            picasso            : "com.squareup.picasso:picasso:${picassoVersion}",
+            constrainLayout    : "com.android.support.constraint:constraint-layout:${constrainLayoutVersion}"
+    ]
+
+    testDependencies = [
+            junit      : "junit:junit:${jUnitVersion}",
+            assertj    : "org.assertj:assertj-core:${assertJVersion}",
+            mockito    : "org.mockito:mockito-core:${mockitoVersion}",
+            robolectric: "org.robolectric:robolectric:${robolectricVersion}",
+            espresso   : "com.android.support.test.espresso:espresso-core:${espressoVersion}",
+            testRunner : "com.android.support.test:runner:${testRunnerVersion}",
+            testRules  : "com.android.support.test:rules:${testRunnerVersion}",
+            uiAutomator: "com.android.support.test.uiautomator:uiautomator-v18:${uiAutomatorVersion}"
+    ]
+}
