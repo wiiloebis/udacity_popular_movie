@@ -3,6 +3,8 @@ package udacity.winni.popsmovie.presentation.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
+
 /**
  * Created by winniseptiani on 6/16/17.
  */
@@ -21,6 +23,8 @@ public class MovieVM implements Parcelable {
 
     private int releaseYear;
 
+    private String releaseDate;
+
     private long runtime;
 
     private double voteAverage;
@@ -38,6 +42,7 @@ public class MovieVM implements Parcelable {
         releaseYear = in.readInt();
         runtime = in.readLong();
         voteAverage = in.readDouble();
+        releaseDate = in.readString();
     }
 
     public static final Creator<MovieVM> CREATOR = new Creator<MovieVM>() {
@@ -99,6 +104,7 @@ public class MovieVM implements Parcelable {
         dest.writeLong(runtime);
         dest.writeDouble(voteAverage);
         dest.writeLong(id);
+        dest.writeString(releaseDate);
     }
 
     public double getVoteAverage() {
@@ -131,5 +137,13 @@ public class MovieVM implements Parcelable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 }

@@ -24,4 +24,17 @@ public class Utils {
             return 0;
         }
     }
+
+    public static String formatReleaseDate(String stringDate) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            Date newDate = format.parse(stringDate);
+            format = new SimpleDateFormat("MMM dd, yyyy");
+            return format.format(newDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 }

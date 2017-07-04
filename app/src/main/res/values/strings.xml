@@ -11,4 +11,5 @@
     <string name="mark_as_favorite">Mark as\n favorite</string>
     <string name="unmark_as_favorite">Unmark as\n favorite</string>
     <string name="movies_is_empty">Movie list is empty</string>
+    <string name="no_date">Date is not available</string>
 </resources>
