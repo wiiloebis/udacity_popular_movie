@@ -156,7 +156,7 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
             public void onLoadMore() {
                 if (loadMore && popularMode) {
                     movieGalleryPresenter.getPopularMovies();
-                } else {
+                } else if (loadMore && !popularMode) {
                     movieGalleryPresenter.getTopRatedMovies();
                 }
             }

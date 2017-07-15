@@ -82,6 +82,8 @@
                 android:layout_below="@id/iv_movie_cover"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/lightGrey"
+                android:textSize="@dimen/font_12"
                 android:layout_marginTop="@dimen/default_margin"/>
 
             <LinearLayout
@@ -94,9 +96,19 @@
                 android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginBottom="@dimen/default_margin"/>
 
+            <TextView
+                android:id="@+id/tv_trailer_title"
+                android:layout_below="@id/separator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lightGrey"
+                android:textSize="@dimen/font_16"
+                android:text="@string/trailer_title"
+                android:layout_marginBottom="@dimen/default_margin"/>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_trailer"
-                android:layout_below="@id/separator"
+                android:layout_below="@id/tv_trailer_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 

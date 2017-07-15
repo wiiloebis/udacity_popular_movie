@@ -1,6 +1,6 @@
 package udacity.winni.popsmovie.base;
 
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 public abstract class EndlessScrollListener extends RecyclerView.OnScrollListener {
@@ -21,9 +21,9 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
 
     private int firstVisibleItem, visibleItemCount, totalItemCount;
 
-    private final GridLayoutManager gridLayoutManager;
+    private final LinearLayoutManager gridLayoutManager;
 
-    public EndlessScrollListener(GridLayoutManager gridLayoutManager, int visibleThreshold) {
+    public EndlessScrollListener(LinearLayoutManager gridLayoutManager, int visibleThreshold) {
         this.gridLayoutManager = gridLayoutManager;
         this.visibleThreshold = visibleThreshold;
     }

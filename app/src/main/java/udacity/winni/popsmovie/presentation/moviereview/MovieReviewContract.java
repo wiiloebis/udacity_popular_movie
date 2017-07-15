@@ -1,22 +1,23 @@
-package udacity.winni.popsmovie.presentation.moviegallery;
+package udacity.winni.popsmovie.presentation.moviereview;
 
 import java.util.List;
 
 import udacity.winni.popsmovie.base.BasePresenter;
 import udacity.winni.popsmovie.base.BaseView;
+import udacity.winni.popsmovie.presentation.model.MovieReviewVM;
 import udacity.winni.popsmovie.presentation.model.MovieVM;
 
 /**
- * Created by winniseptiani on 6/16/17.
+ * Created by winniseptiani on 7/11/17.
  */
 
-public interface MovieGalleryContract {
+public interface MovieReviewContract {
 
     interface View extends BaseView {
 
-        void onGetMoviesSuccess(List<MovieVM> movies);
+        void onGetMovieReviewsSuccess(List<MovieReviewVM> movieReviews);
 
-        void onGetMoviesFailed();
+        void onGetMovieReviewsFailed();
 
         void showLoadingBar();
 
@@ -25,9 +26,7 @@ public interface MovieGalleryContract {
 
     interface Presenter extends BasePresenter {
 
-        void getPopularMovies();
-
-        void getTopRatedMovies();
+        void getMovieReviews(long id);
 
         void resetPage();
 
