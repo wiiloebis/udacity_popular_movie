@@ -19,6 +19,8 @@ import udacity.winni.popsmovie.PopsMovieApplication;
 import udacity.winni.popsmovie.data.RestApi;
 import udacity.winni.popsmovie.data.model.Movie;
 import udacity.winni.popsmovie.data.model.MovieList;
+import udacity.winni.popsmovie.data.model.MovieReviewList;
+import udacity.winni.popsmovie.data.model.Video;
 
 /**
  * Created by winniseptiani on 6/21/17.
@@ -105,6 +107,22 @@ public class RetrofitRestApiImpl implements RestApi {
     public Observable<Movie> getMovieDetail(String url, Map<String, String> query) {
         return apiService.getMovieDetail(url, query)
             .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<MovieReviewList> getMovieReviews(String url, Map<String, String> query) {
+        return apiService.getMovieReviews(url, query)
+            .observeOn(AndroidSchedulers.mainThread())
+            .map(response -> new MovieReviewList(response.getPage(), response.getResults()))
+            .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<List<Video>> getMovieTrailers(String url, Map<String, String> query) {
+        return apiService.getMovieTrailers(url, query)
+            .observeOn(AndroidSchedulers.mainThread())
+            .map(response -> response.getResults())
             .subscribeOn(Schedulers.io());
     }
 }

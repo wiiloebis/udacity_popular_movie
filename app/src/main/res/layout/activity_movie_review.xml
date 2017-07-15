@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:paddingLeft="@dimen/default_margin"
+    android:paddingRight="@dimen/default_margin">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_movie"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/layout_failed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/default_margin"
+        android:gravity="center"
+        android:textColor="@color/paleGrey"
+        android:textSize="@dimen/font_30"
+        android:text="@string/fetch_movie_failed"
+        android:visibility="gone">
+    </TextView>
+
+</LinearLayout>
