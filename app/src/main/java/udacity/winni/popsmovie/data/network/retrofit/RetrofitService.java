@@ -9,9 +9,9 @@ import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 import udacity.winni.popsmovie.data.model.Movie;
 import udacity.winni.popsmovie.data.network.response.GetHighRatedMovieResponse;
+import udacity.winni.popsmovie.data.network.response.GetMovieReviewResponse;
+import udacity.winni.popsmovie.data.network.response.GetMovieTrailerResponse;
 import udacity.winni.popsmovie.data.network.response.GetPopularMovieResponse;
-
-import static udacity.winni.popsmovie.data.network.retrofit.RetrofitService.CONTENT_TYPE_JSON;
 
 /**
  * Created by winniseptiani on 6/23/17.
@@ -34,5 +34,15 @@ public interface RetrofitService {
     @Headers({CONTENT_TYPE_JSON})
     @GET
     Observable<Movie> getMovieDetail(@Url String url,
+        @QueryMap(encoded = true) Map<String, String> optionsQuery);
+
+    @Headers({CONTENT_TYPE_JSON})
+    @GET
+    Observable<GetMovieTrailerResponse> getMovieTrailers(@Url String url,
+        @QueryMap(encoded = true) Map<String, String> optionsQuery);
+
+    @Headers({CONTENT_TYPE_JSON})
+    @GET
+    Observable<GetMovieReviewResponse> getMovieReviews(@Url String url,
         @QueryMap(encoded = true) Map<String, String> optionsQuery);
 }

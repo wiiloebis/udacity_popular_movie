@@ -8,6 +8,8 @@ import udacity.winni.popsmovie.BuildConfig;
 import udacity.winni.popsmovie.data.RestApi;
 import udacity.winni.popsmovie.data.model.Movie;
 import udacity.winni.popsmovie.data.model.MovieList;
+import udacity.winni.popsmovie.data.model.MovieReviewList;
+import udacity.winni.popsmovie.data.model.Video;
 import udacity.winni.popsmovie.data.network.EndpointAddress;
 import udacity.winni.popsmovie.data.network.Param;
 import udacity.winni.popsmovie.data.source.MovieDataSource;
@@ -48,5 +50,42 @@ public class CloudMovieDataSource implements MovieDataSource {
         HashMap params = new HashMap<>();
         params.put(Param.API_KEY, BuildConfig.API_KEY);
         return restApi.getMovieDetail(fullUrl, params);
+    }
+
+    @Override
+    public Observable<List<Video>> getMovieTrailers(long id) {
+        String fullUrl = EndpointAddress.getMovieDbUrl(String.format(EndpointAddress.VIDEOS, id));
+        HashMap params = new HashMap<>();
+        params.put(Param.API_KEY, BuildConfig.API_KEY);
+        return restApi.getMovieTrailers(fullUrl, params);
+    }
+
+    @Override
+    public Observable<MovieReviewList> getMovieReviews(long id, int page) {
+        String fullUrl = EndpointAddress.getMovieDbUrl(String.format(EndpointAddress.REVIEWS, id));
+        HashMap params = new HashMap<>();
+        params.put(Param.API_KEY, BuildConfig.API_KEY);
+        params.put(Param.PAGE, page);
+        return restApi.getMovieReviews(fullUrl, params);
+    }
+
+    @Override
+    public Observable<MovieList> getFavoriteMovies(int page) {
+        return null;
+    }
+
+    @Override
+    public Observable<Boolean> addFavoritMovie(Movie movie) {
+        return null;
+    }
+
+    @Override
+    public Observable<Boolean> removeFavoriteMovie(long id) {
+        return null;
+    }
+
+    @Override
+    public Observable<Boolean> isMovieFavorited(long id) {
+        return null;
     }
 }

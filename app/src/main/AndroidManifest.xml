@@ -24,6 +24,8 @@
 
         <activity android:name=".presentation.moviegallery.MovieGalleryActivity"/>
 
+        <activity android:name=".presentation.moviereview.MovieReviewActivity"/>
+
     </application>
 
 </manifest>

@@ -3,11 +3,14 @@ package udacity.winni.popsmovie.presentation.moviedetail;
 import com.squareup.picasso.Picasso;
 
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -19,25 +22,38 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import udacity.winni.popsmovie.ApplicationComponent;
 import udacity.winni.popsmovie.R;
+import udacity.winni.popsmovie.base.EndlessScrollListener;
 import udacity.winni.popsmovie.presentation.mapper.MovieMapper;
+import udacity.winni.popsmovie.presentation.mapper.MovieVideoMapper;
 import udacity.winni.popsmovie.presentation.model.MovieVM;
+import udacity.winni.popsmovie.presentation.model.MovieTrailerVM;
+import udacity.winni.popsmovie.presentation.moviereview.MovieReviewActivity;
 
 /**
  * Created by winniseptiani on 6/15/17.
  */
 
-public class MovieDetailActivity extends AppCompatActivity implements MovieDetailContract.View {
+public class MovieDetailActivity extends AppCompatActivity implements MovieDetailContract.View,
+    MovieTrailerAdapter.OnItemClickedListener {
 
     private static final int DIV_FACTOR = 10;
 
     public static String MOVIE_ID = "MOVIE_ID";
 
+    public static String MOVIE_FAVORITED_STATUS = "MOVIE_FAVORITED_STATUS";
+
     public static String MOVIE = "MOVIE";
+
+    private static final String VIDEO_ID = "VIDEO_ID";
 
     @BindView(R.id.tv_movie_title)
     TextView tvMovieTitle;
@@ -69,11 +85,19 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     @BindView(R.id.cb_favorit_mark)
     CheckBox cbFavoritMark;
 
+    private MovieTrailerAdapter movieTrailerAdapter;
+
+    private LinearLayoutManager linearLayoutManager;
+
     private MovieDetailPresenter movieDetailPresenter;
 
     private ProgressDialog progressDialog;
 
     private MovieVM movie;
+
+    private boolean loadMore = true;
+
+    private long movieId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,14 +106,36 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         ButterKnife.bind(this);
         setScreenActionBar();
         setCheckboxView();
+        setTrailerAdapter();
         movieDetailPresenter = new MovieDetailPresenter(this,
-            ApplicationComponent.provideMovieDetail(), new MovieMapper());
+            ApplicationComponent.provideGetMovieDetail(),
+            ApplicationComponent.provideGetMovieTrailers(),
+            ApplicationComponent.provideAddFavoriteMovie(),
+            ApplicationComponent.provideRemoveFavoriteMovie(),
+            ApplicationComponent.provideCheckIfMovieFavorited(),
+            new MovieMapper(), new MovieVideoMapper());
         if (savedInstanceState == null || !savedInstanceState.containsKey(MOVIE)) {
             getMovieDetailFromId();
         } else {
             movie = savedInstanceState.getParcelable(MOVIE);
             onGetMovieDetailSuccess(movie);
         }
+    }
+
+    private void setTrailerAdapter() {
+        movieTrailerAdapter = new MovieTrailerAdapter(new ArrayList<>(), this);
+        linearLayoutManager = new LinearLayoutManager(this);
+        rvTrailer.setAdapter(movieTrailerAdapter);
+        rvTrailer.setLayoutManager(linearLayoutManager);
+        rvTrailer.addOnScrollListener(new EndlessScrollListener(linearLayoutManager,
+            EndlessScrollListener.ITEM_VISIBLE_TRESHOLD) {
+            @Override
+            public void onLoadMore() {
+                if (loadMore) {
+                    movieDetailPresenter.getMovieTrailer(movieId);
+                }
+            }
+        });
     }
 
     @Override
@@ -116,6 +162,17 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                 }
             }
         });
+
+        cbFavoritMark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (cbFavoritMark.isChecked()) {
+                    movieDetailPresenter.addFavoriteMovie(movie);
+                } else {
+                    movieDetailPresenter.removeFavoriteMovie(movieId);
+                }
+            }
+        });
     }
 
     @Override
@@ -130,10 +187,11 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
-            case R.id.refresh:
-                if (movieDetailPresenter != null) {
-                    getMovieDetailFromId();
-                }
+                return true;
+            case R.id.review:
+                Intent intent = new Intent(this, MovieReviewActivity.class);
+                intent.putExtra(MovieReviewActivity.MOVIE_ID, movieId);
+                startActivity(intent);
                 return true;
         }
 
@@ -142,21 +200,20 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     private void getMovieDetailFromId() {
         Intent intent = getIntent();
-        long movieId = intent.getLongExtra(MOVIE_ID, 0);
+        movieId = intent.getLongExtra(MOVIE_ID, 0);
         movieDetailPresenter.getMovieDetail(movieId);
     }
 
     @Override
     public void onGetMovieDetailSuccess(MovieVM movieVM) {
         movie = movieVM;
-        rlMovieDetailFailed.setVisibility(View.GONE);
-        rlMovieDetailSuccess.setVisibility(View.VISIBLE);
         tvMovieTitle.setText(movieVM.getOriginalTitle());
         displayReleaseDate(movieVM.getReleaseDate());
         tvMovieDuration.setText(movieVM.getRuntime() + getString(R.string.min));
         tvMovieOverview.setText(movieVM.getOverview());
         displayPopularity(movieVM.getVoteAverage());
         displayPoster(movieVM.getPoster());
+        movieDetailPresenter.checkIfMovieFavorited(movieVM.getId());
     }
 
     private void displayReleaseDate(String releaseDate) {
@@ -188,6 +245,52 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     }
 
     @Override
+    public void onGetMovieTrailersSuccess(List<MovieTrailerVM> movieTrailerVMs) {
+        rlMovieDetailFailed.setVisibility(View.GONE);
+        rlMovieDetailSuccess.setVisibility(View.VISIBLE);
+        movieTrailerAdapter.resetData(movieTrailerVMs);
+    }
+
+    @Override
+    public void onGetMovieTrailersFailed() {
+
+    }
+
+    @Override
+    public void onAddFavoriteMovieSuccess(boolean success) {
+
+    }
+
+    @Override
+    public void onAddFavoriteMovieFailed() {
+
+    }
+
+    @Override
+    public void onRemoveFavoriteMovieSuccess(boolean success) {
+
+    }
+
+    @Override
+    public void onRemoveFavoriteMovieFailed() {
+
+    }
+
+    @Override
+    public void onCheckIfMovieFavoritedSuccess(boolean success) {
+        if (success) {
+            cbFavoritMark.setChecked(true);
+        } else {
+            cbFavoritMark.setChecked(false);
+        }
+    }
+
+    @Override
+    public void onCheckIfMovieFavoritedFailed() {
+
+    }
+
+    @Override
     public void showLoadingBar() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this, R.style.ProgressDialogTheme);
@@ -201,6 +304,25 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     public void hideLoadingBar() {
         if (progressDialog != null) {
             progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onItemClicked(MovieTrailerVM movieTrailerVM) {
+
+        Intent applicationIntent = new Intent(Intent.ACTION_VIEW,
+            Uri.parse("vnd.youtube:" + movieTrailerVM.getKey()));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+            Uri.parse("http://www.youtube.com/watch?v=" + movieTrailerVM.getKey()));
+        try {
+            startActivity(applicationIntent);
+        } catch (ActivityNotFoundException ex) {
+            if (browserIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(browserIntent);
+            } else {
+                Toast.makeText(this, getString(R.string.video_cannot_be_played), Toast.LENGTH_LONG)
+                    .show();
+            }
         }
     }
 }

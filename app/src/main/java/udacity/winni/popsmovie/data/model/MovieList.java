@@ -17,6 +17,8 @@ public class MovieList {
         this.movies = result;
     }
 
+
+
     public int getPage() {
         return page;
     }

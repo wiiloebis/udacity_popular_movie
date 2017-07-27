@@ -39,6 +39,12 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
 
     public static String CURRENT_PAGE = "CURRENT_PAGE";
 
+    private static final int POPULAR_MODE = 1;
+
+    private static final int TOP_RATED_MODE = 2;
+
+    private static final int FAVORITE_MODE = 3;
+
     private static final int NUMBER_OF_COLUMN = 2;
 
     private MovieGalleryPresenter movieGalleryPresenter;
@@ -61,7 +67,7 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
 
     private boolean loadMore = true;
 
-    private boolean popularMode = true;
+    private int galleryMode = POPULAR_MODE;
 
     private String screenTitle;
 
@@ -72,7 +78,9 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
         ButterKnife.bind(this);
         movieGalleryPresenter = new MovieGalleryPresenter(this,
             ApplicationComponent.provideGetHighRatedMovies(),
-            ApplicationComponent.provideGetPopularMovies(), new MovieMapper());
+            ApplicationComponent.provideGetPopularMovies(),
+            ApplicationComponent.provideGetFavoriteMovies(),
+            new MovieMapper());
         setMovieAdapter();
         handleDataFromState(savedInstanceState);
         setScreenActionBar();
@@ -88,6 +96,21 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
             screenTitle = savedInstanceState.getString(SCREEN_TITLE);
             int currentPage = savedInstanceState.getInt(CURRENT_PAGE);
             movieGalleryPresenter.setPage(currentPage);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        Support for the possibility of unfavoriting movie from the detail. The data reload to
+// display the relevant favorite movies
+        if (galleryMode == FAVORITE_MODE) {
+            movies.clear();
+            if (movieGalleryPresenter != null) {
+                movieAdapter.clearData();
+                movieGalleryPresenter.resetPage();
+                movieGalleryPresenter.getFavoriteMovies();
+            }
         }
     }
 
@@ -120,9 +143,10 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
                 onBackPressed();
                 return true;
             case R.id.popular:
-                actionBar.setTitle(getString(R.string.pop_movies_title));
                 screenTitle = getString(R.string.pop_movies_title);
-                popularMode = true;
+                actionBar.setTitle(screenTitle);
+                galleryMode = POPULAR_MODE;
+                movies.clear();
                 if (movieGalleryPresenter != null) {
                     movieAdapter.clearData();
                     movieGalleryPresenter.resetPage();
@@ -130,13 +154,25 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
                 }
                 return true;
             case R.id.toprated:
-                popularMode = false;
-                actionBar.setTitle(getString(R.string.top_rated_movies_title));
+                galleryMode = TOP_RATED_MODE;
                 screenTitle = getString(R.string.top_rated_movies_title);
+                actionBar.setTitle(screenTitle);
+                movies.clear();
                 if (movieGalleryPresenter != null) {
                     movieAdapter.clearData();
                     movieGalleryPresenter.resetPage();
                     movieGalleryPresenter.getTopRatedMovies();
+                }
+                return true;
+            case R.id.favorite:
+                galleryMode = FAVORITE_MODE;
+                screenTitle = getString(R.string.favorite_movies_title);
+                actionBar.setTitle(screenTitle);
+                movies.clear();
+                if (movieGalleryPresenter != null) {
+                    movieAdapter.clearData();
+                    movieGalleryPresenter.resetPage();
+                    movieGalleryPresenter.getFavoriteMovies();
                 }
                 return true;
         }
@@ -154,26 +190,24 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
             EndlessScrollListener.ITEM_VISIBLE_TRESHOLD) {
             @Override
             public void onLoadMore() {
-                if (loadMore && popularMode) {
+                if (loadMore && (galleryMode == POPULAR_MODE)) {
                     movieGalleryPresenter.getPopularMovies();
-                } else {
+                } else if (loadMore && (galleryMode == TOP_RATED_MODE)) {
                     movieGalleryPresenter.getTopRatedMovies();
+                } else if (loadMore && (galleryMode == TOP_RATED_MODE)) {
+                    movieGalleryPresenter.getFavoriteMovies();
                 }
             }
         });
     }
 
     @Override
-    public void onGetMoviesSuccess(List<MovieVM> movies) {
+    public void onGetMoviesSuccess(List<MovieVM> movies, boolean loadMore) {
         this.movies = movies;
         rvMovie.setVisibility(View.VISIBLE);
         tvFailMessage.setVisibility(View.GONE);
         movieAdapter.addData(movies);
-        if (!movies.isEmpty()) {
-            loadMore = true;
-        } else {
-            loadMore = false;
-        }
+        this.loadMore = loadMore;
     }
 
     @Override

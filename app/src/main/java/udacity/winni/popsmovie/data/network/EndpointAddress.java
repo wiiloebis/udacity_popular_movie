@@ -12,6 +12,10 @@ public class EndpointAddress {
 
     public static final String TOP_RATED = "top_rated";
 
+    public static final String VIDEOS = "%d/videos";
+
+    public static final String REVIEWS = "%d/reviews";
+
     public static final String IMAGE_SIZE_92 = "w92/";
 
     public static final String IMAGE_SIZE_154 = "w154/";

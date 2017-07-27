@@ -103,7 +103,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    List<MovieVM> getData() {
+    public List<MovieVM> getData() {
         return movieVMs;
     }
 

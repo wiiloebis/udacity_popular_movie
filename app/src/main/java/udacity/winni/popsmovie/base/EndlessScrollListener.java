@@ -1,13 +1,13 @@
 package udacity.winni.popsmovie.base;
 
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 public abstract class EndlessScrollListener extends RecyclerView.OnScrollListener {
 
     public static String TAG = EndlessScrollListener.class.getSimpleName();
 
-    public static final int ITEM_VISIBLE_TRESHOLD = 4;
+    public static final int ITEM_VISIBLE_TRESHOLD = 3;
 
     private int previousTotal = 0; // The total number of items in the dataset after the last load
 
@@ -21,9 +21,9 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
 
     private int firstVisibleItem, visibleItemCount, totalItemCount;
 
-    private final GridLayoutManager gridLayoutManager;
+    private final LinearLayoutManager gridLayoutManager;
 
-    public EndlessScrollListener(GridLayoutManager gridLayoutManager, int visibleThreshold) {
+    public EndlessScrollListener(LinearLayoutManager gridLayoutManager, int visibleThreshold) {
         this.gridLayoutManager = gridLayoutManager;
         this.visibleThreshold = visibleThreshold;
     }
