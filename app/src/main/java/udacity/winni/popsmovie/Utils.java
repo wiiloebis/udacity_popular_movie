@@ -22,6 +22,9 @@ public class Utils {
         } catch (ParseException e) {
             e.printStackTrace();
             return 0;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return 0;
         }
     }
 
@@ -33,6 +36,9 @@ public class Utils {
             format = new SimpleDateFormat("MMM dd, yyyy");
             return format.format(newDate);
         } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        } catch (NullPointerException e) {
             e.printStackTrace();
             return "";
         }

@@ -36,7 +36,7 @@ public class MovieVideoMapper {
         if (videos != null) {
             movieTrailerVMs = new ArrayList<>();
             for (Video video : videos) {
-                if (video.getType().equalsIgnoreCase(Video.TEASER)) {
+                if (video.getType().equalsIgnoreCase(Video.TRAILER)) {
                     movieTrailerVMs.add(transform(video));
                 }
             }

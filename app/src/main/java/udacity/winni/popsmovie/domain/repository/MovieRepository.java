@@ -23,4 +23,12 @@ public interface MovieRepository {
     Observable<List<Video>> getMovieTrailers(long id);
 
     Observable<MovieReviewList> getMoviewReviews(long id, int page);
+
+    Observable<MovieList> getFavoriteMovies(int page);
+
+    Observable<Boolean> addFavoriteMovie(Movie movie);
+
+    Observable<Boolean> removeFavoriteMovie(long id);
+
+    Observable<Boolean> isMovieFavorited(long id);
 }

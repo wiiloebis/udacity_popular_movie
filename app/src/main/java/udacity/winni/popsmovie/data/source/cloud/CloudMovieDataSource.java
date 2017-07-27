@@ -68,4 +68,24 @@ public class CloudMovieDataSource implements MovieDataSource {
         params.put(Param.PAGE, page);
         return restApi.getMovieReviews(fullUrl, params);
     }
+
+    @Override
+    public Observable<MovieList> getFavoriteMovies(int page) {
+        return null;
+    }
+
+    @Override
+    public Observable<Boolean> addFavoritMovie(Movie movie) {
+        return null;
+    }
+
+    @Override
+    public Observable<Boolean> removeFavoriteMovie(long id) {
+        return null;
+    }
+
+    @Override
+    public Observable<Boolean> isMovieFavorited(long id) {
+        return null;
+    }
 }
