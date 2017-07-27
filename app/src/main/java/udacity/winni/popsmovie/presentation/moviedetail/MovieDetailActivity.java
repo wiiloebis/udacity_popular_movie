@@ -49,6 +49,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     public static String MOVIE_ID = "MOVIE_ID";
 
+    public static String MOVIE_FAVORITED_STATUS = "MOVIE_FAVORITED_STATUS";
+
     public static String MOVIE = "MOVIE";
 
     private static final String VIDEO_ID = "VIDEO_ID";
@@ -110,6 +112,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             ApplicationComponent.provideGetMovieTrailers(),
             ApplicationComponent.provideAddFavoriteMovie(),
             ApplicationComponent.provideRemoveFavoriteMovie(),
+            ApplicationComponent.provideCheckIfMovieFavorited(),
             new MovieMapper(), new MovieVideoMapper());
         if (savedInstanceState == null || !savedInstanceState.containsKey(MOVIE)) {
             getMovieDetailFromId();
@@ -154,9 +157,18 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     cbFavoritMark.setText(getString(R.string.unmark_as_favorite));
-                    movieDetailPresenter.addFavoriteMovie(movieId);
                 } else {
                     cbFavoritMark.setText(getString(R.string.mark_as_favorite));
+                }
+            }
+        });
+
+        cbFavoritMark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (cbFavoritMark.isChecked()) {
+                    movieDetailPresenter.addFavoriteMovie(movie);
+                } else {
                     movieDetailPresenter.removeFavoriteMovie(movieId);
                 }
             }
@@ -175,6 +187,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                return true;
             case R.id.review:
                 Intent intent = new Intent(this, MovieReviewActivity.class);
                 intent.putExtra(MovieReviewActivity.MOVIE_ID, movieId);
@@ -200,6 +213,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         tvMovieOverview.setText(movieVM.getOverview());
         displayPopularity(movieVM.getVoteAverage());
         displayPoster(movieVM.getPoster());
+        movieDetailPresenter.checkIfMovieFavorited(movieVM.getId());
     }
 
     private void displayReleaseDate(String releaseDate) {
@@ -259,6 +273,20 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onRemoveFavoriteMovieFailed() {
+
+    }
+
+    @Override
+    public void onCheckIfMovieFavoritedSuccess(boolean success) {
+        if (success) {
+            cbFavoritMark.setChecked(true);
+        } else {
+            cbFavoritMark.setChecked(false);
+        }
+    }
+
+    @Override
+    public void onCheckIfMovieFavoritedFailed() {
 
     }
 

@@ -21,6 +21,7 @@ public class MovieMapper {
             movieVM = new MovieVM();
             movieVM.setId(movie.getId());
             movieVM.setOriginalTitle(movie.getOriginalTitle());
+            movieVM.setTitle(movie.getTitle());
             movieVM.setPosterPath(movie.getPosterPath());
             movieVM.setRuntime(movie.getRuntime());
             movieVM.setVoteAverage(movie.getVoteAverage());

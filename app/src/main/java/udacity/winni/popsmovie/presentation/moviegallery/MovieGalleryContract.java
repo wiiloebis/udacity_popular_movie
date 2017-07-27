@@ -14,7 +14,7 @@ public interface MovieGalleryContract {
 
     interface View extends BaseView {
 
-        void onGetMoviesSuccess(List<MovieVM> movies);
+        void onGetMoviesSuccess(List<MovieVM> movies, boolean loadMore);
 
         void onGetMoviesFailed();
 
@@ -28,6 +28,8 @@ public interface MovieGalleryContract {
         void getPopularMovies();
 
         void getTopRatedMovies();
+
+        void getFavoriteMovies();
 
         void resetPage();
 

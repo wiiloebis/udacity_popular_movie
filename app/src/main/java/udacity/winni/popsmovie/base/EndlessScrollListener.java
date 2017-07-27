@@ -7,7 +7,7 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
 
     public static String TAG = EndlessScrollListener.class.getSimpleName();
 
-    public static final int ITEM_VISIBLE_TRESHOLD = 4;
+    public static final int ITEM_VISIBLE_TRESHOLD = 3;
 
     private int previousTotal = 0; // The total number of items in the dataset after the last load
 

@@ -6,11 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -23,13 +20,8 @@ import butterknife.ButterKnife;
 import udacity.winni.popsmovie.ApplicationComponent;
 import udacity.winni.popsmovie.R;
 import udacity.winni.popsmovie.base.EndlessScrollListener;
-import udacity.winni.popsmovie.presentation.mapper.MovieMapper;
 import udacity.winni.popsmovie.presentation.mapper.MovieReviewMapper;
 import udacity.winni.popsmovie.presentation.model.MovieReviewVM;
-import udacity.winni.popsmovie.presentation.model.MovieVM;
-import udacity.winni.popsmovie.presentation.moviedetail.MovieDetailActivity;
-import udacity.winni.popsmovie.presentation.moviegallery.MovieAdapter;
-import udacity.winni.popsmovie.presentation.moviegallery.MovieGalleryPresenter;
 
 /**
  * Created by winniseptiani on 7/9/17.
@@ -72,7 +64,7 @@ public class MovieReviewActivity extends AppCompatActivity implements MovieRevie
         setContentView(R.layout.activity_movie_gallery);
         ButterKnife.bind(this);
         movieReviewPresenter = new MovieReviewPresenter(this,
-            ApplicationComponent.provideMovieReviews(), new MovieReviewMapper());
+            ApplicationComponent.provideGetMovieReviews(), new MovieReviewMapper());
         setMovieAdapter();
         handleDataFromState(savedInstanceState);
         setScreenActionBar();

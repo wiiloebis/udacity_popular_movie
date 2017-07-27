@@ -12,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import udacity.winni.popsmovie.R;
 import udacity.winni.popsmovie.presentation.model.MovieTrailerVM;
+import udacity.winni.popsmovie.presentation.moviegallery.MovieAdapter;
 
 /**
  * Created by winniseptiani on 4/7/17.
@@ -28,19 +29,26 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         @BindView(R.id.tv_trailer_title)
         TextView tvTrailerTitle;
 
-        public TrailerViewHolder(View itemView) {
+        private View itemView;
+
+        private MovieTrailerAdapter.OnItemClickedListener onItemClickedListener;
+
+        public TrailerViewHolder(View itemView,
+            MovieTrailerAdapter.OnItemClickedListener onItemClickedListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
+            this.itemView = itemView;
+            this.onItemClickedListener = onItemClickedListener;
         }
 
         public void bindData(final MovieTrailerVM movieTrailerVM) {
             tvTrailerTitle.setText(movieTrailerVM.getName());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickedListener.onItemClicked(movieTrailerVM);
+                }
+            });
         }
     }
 
@@ -54,7 +62,7 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.item_trailer, parent, false);
-        return new MovieTrailerAdapter.TrailerViewHolder(view);
+        return new MovieTrailerAdapter.TrailerViewHolder(view, onItemClickedListener);
     }
 
     @Override
