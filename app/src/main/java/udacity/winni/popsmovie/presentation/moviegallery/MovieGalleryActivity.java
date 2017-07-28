@@ -119,21 +119,6 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
         }
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-////        Support for the possibility of unfavoriting movie from the detail. The data reload to
-//// display the relevant favorite movies
-//        if (galleryMode == FAVORITE_MODE) {
-//            movies.clear();
-//            if (movieGalleryPresenter != null) {
-//                movieAdapter.clearData();
-//                movieGalleryPresenter.resetPage();
-//                movieGalleryPresenter.getFavoriteMovies();
-//            }
-//        }
-//    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList(MOVIES, new ArrayList<>(movieAdapter.getData()));
