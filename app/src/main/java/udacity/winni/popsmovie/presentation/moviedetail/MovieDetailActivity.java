@@ -51,6 +51,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     public static String MOVIE_FAVORITED_STATUS = "MOVIE_FAVORITED_STATUS";
 
+    public static int OPEN_DETAIL_ACTVITY = 10;
+
     public static String MOVIE = "MOVIE";
 
     private static final String VIDEO_ID = "VIDEO_ID";
@@ -98,6 +100,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     private boolean loadMore = true;
 
     private long movieId;
+
+    private boolean movieFavoriteStatusChanged = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -166,6 +170,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         cbFavoritMark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                movieFavoriteStatusChanged = true;
                 if (cbFavoritMark.isChecked()) {
                     movieDetailPresenter.addFavoriteMovie(movie);
                 } else {
@@ -196,6 +201,16 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra(MOVIE_FAVORITED_STATUS, movieFavoriteStatusChanged);
+        if(movieFavoriteStatusChanged) {
+            setResult(RESULT_OK, intent);
+        }
+        finish();
     }
 
     private void getMovieDetailFromId() {

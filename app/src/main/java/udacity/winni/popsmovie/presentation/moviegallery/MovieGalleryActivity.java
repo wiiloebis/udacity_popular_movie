@@ -39,6 +39,8 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
 
     public static String CURRENT_PAGE = "CURRENT_PAGE";
 
+    public static String GALLERY_MODE = "GALLERY_MODE";
+
     private static final int POPULAR_MODE = 1;
 
     private static final int TOP_RATED_MODE = 2;
@@ -96,29 +98,48 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
             screenTitle = savedInstanceState.getString(SCREEN_TITLE);
             int currentPage = savedInstanceState.getInt(CURRENT_PAGE);
             movieGalleryPresenter.setPage(currentPage);
+            galleryMode = savedInstanceState.getInt(GALLERY_MODE);
         }
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-//        Support for the possibility of unfavoriting movie from the detail. The data reload to
-// display the relevant favorite movies
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (galleryMode == FAVORITE_MODE) {
-            movies.clear();
-            if (movieGalleryPresenter != null) {
-                movieAdapter.clearData();
-                movieGalleryPresenter.resetPage();
-                movieGalleryPresenter.getFavoriteMovies();
+            if (requestCode == MovieDetailActivity.OPEN_DETAIL_ACTVITY
+                && resultCode == MovieDetailActivity.RESULT_OK) {
+                movies.clear();
+                if (movieGalleryPresenter != null) {
+                    movieAdapter.clearData();
+                    movieGalleryPresenter.resetPage();
+                    movieGalleryPresenter.getFavoriteMovies();
+                }
             }
         }
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+////        Support for the possibility of unfavoriting movie from the detail. The data reload to
+//// display the relevant favorite movies
+//        if (galleryMode == FAVORITE_MODE) {
+//            movies.clear();
+//            if (movieGalleryPresenter != null) {
+//                movieAdapter.clearData();
+//                movieGalleryPresenter.resetPage();
+//                movieGalleryPresenter.getFavoriteMovies();
+//            }
+//        }
+//    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList(MOVIES, new ArrayList<>(movieAdapter.getData()));
         outState.putString(SCREEN_TITLE, screenTitle);
         outState.putInt(CURRENT_PAGE, movieGalleryPresenter.getCurrentPage());
+        outState.putInt(GALLERY_MODE, galleryMode);
         super.onSaveInstanceState(outState);
     }
 
@@ -238,6 +259,6 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
     public void onItemClicked(MovieVM movie) {
         Intent intent = new Intent(this, MovieDetailActivity.class);
         intent.putExtra(MovieDetailActivity.MOVIE_ID, movie.getId());
-        startActivity(intent);
+        startActivityForResult(intent, MovieDetailActivity.OPEN_DETAIL_ACTVITY);
     }
 }

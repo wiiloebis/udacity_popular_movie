@@ -11,7 +11,7 @@ import java.util.List;
 public class Movie {
 
     @SerializedName("vote_count")
-    private int voteCount;
+    private long voteCount;
 
     @SerializedName("id")
     private long id;
@@ -48,7 +48,7 @@ public class Movie {
     @SerializedName("belongs_to_collection")
     private Collection belongsToCollection;
 
-    private int budget;
+    private long budget;
 
     private List<Genre> genres;
 
@@ -63,9 +63,9 @@ public class Movie {
     @SerializedName("production_countries")
     private List<ProductionCountry> productionCountries;
 
-    private int revenue;
+    private long revenue;
 
-    private int runtime;
+    private long runtime;
 
     @SerializedName("spoken_languages")
     private List<SpokenLanguage> spokenLanguages;
@@ -77,7 +77,7 @@ public class Movie {
     @SerializedName("original_title")
     private String originalTitle;
 
-    public int getVoteCount() {
+    public long getVoteCount() {
         return voteCount;
     }
 
@@ -133,7 +133,7 @@ public class Movie {
         return belongsToCollection;
     }
 
-    public int getBudget() {
+    public long getBudget() {
         return budget;
     }
 
@@ -157,11 +157,11 @@ public class Movie {
         return productionCountries;
     }
 
-    public int getRevenue() {
+    public long getRevenue() {
         return revenue;
     }
 
-    public int getRuntime() {
+    public long getRuntime() {
         return runtime;
     }
 
