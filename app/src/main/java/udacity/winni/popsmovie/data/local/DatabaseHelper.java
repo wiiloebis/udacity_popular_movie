@@ -1,8 +1,11 @@
 package udacity.winni.popsmovie.data.local;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.Nullable;
 
 import java.util.concurrent.Callable;
 
@@ -11,7 +14,6 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
 import udacity.winni.popsmovie.data.local.MovieContract.*;
-import udacity.winni.popsmovie.data.model.Movie;
 import udacity.winni.popsmovie.data.model.MovieList;
 
 /**
@@ -43,43 +45,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + MovieEntry.TABLE_MOVIE);
-        onCreate(db);
+        db.execSQL(
+            "ALTER TABLE " + MovieContract.MovieEntry.TABLE_MOVIE + " ADD COLUMN " +
+                MovieContract.MovieEntry
+                .COLUMN_OVERVIEW + " string;");
     }
 
-    public Observable<MovieList> getFavoriteMovies(int page) {
-        return makeObservable(movieContract.getFavoriteMovies(page, getWritableDatabase()))
-            .subscribeOn(Schedulers.computation());
+    public Cursor getFavoriteMovies(@Nullable String[] projection,
+        @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+        return movieContract
+            .getFavoriteMovies(getWritableDatabase(), projection, selection, selectionArgs,
+                sortOrder);
     }
 
-    public Observable<Boolean> addFavoriteMovie(Movie movie) {
-        return makeObservable(movieContract.addFavoriteMovie(movie, getWritableDatabase()))
-            .subscribeOn(Schedulers.computation());
+    public Long addFavoriteMovie(ContentValues contentValues) {
+        SQLiteDatabase db = getWritableDatabase();
+        return movieContract.addFavoriteMovie(contentValues, db);
     }
 
-    public Observable<Boolean> removeFavoriteMovie(long movieId) {
-        return makeObservable(movieContract.removeFavoriteMovie(movieId, getWritableDatabase()))
-            .subscribeOn(Schedulers.computation());
-    }
-
-    public Observable<Boolean> isMovieFavorited(long movieId) {
-        return makeObservable(movieContract.isMovieFavorited(movieId, getWritableDatabase()))
-            .subscribeOn(Schedulers.computation());
-    }
-
-    private static <T> Observable<T> makeObservable(final Callable<T> func) {
-
-        return Observable.create(new ObservableOnSubscribe<T>() {
-            @Override
-            public void subscribe(ObservableEmitter<T> emitter) throws Exception {
-                try {
-                    emitter.onNext(func.call());
-                    emitter.onComplete();
-                } catch (Exception ex) {
-                    emitter.onError(ex);
-                }
-
-            }
-        });
+    public int deleteFavoriteMovie(String movieId) {
+        return movieContract.deleteFavoriteMovie(movieId, getWritableDatabase());
     }
 }

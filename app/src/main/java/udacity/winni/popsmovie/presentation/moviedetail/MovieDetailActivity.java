@@ -150,7 +150,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList(MOVIE_TRAILERS, new ArrayList<>(movieTrailerAdapter.getData()));
+        outState
+            .putParcelableArrayList(MOVIE_TRAILERS, new ArrayList<>(movieTrailerAdapter.getData()));
         outState.putParcelable(MOVIE, movie);
         super.onSaveInstanceState(outState);
     }
@@ -286,7 +287,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onAddFavoriteMovieFailed() {
-
+        cbFavoritMark.setChecked(false);
     }
 
     @Override
@@ -296,7 +297,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onRemoveFavoriteMovieFailed() {
-
+        cbFavoritMark.setChecked(true);
     }
 
     @Override

@@ -3,6 +3,7 @@
     package="udacity.winni.popsmovie">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="udacity.winni.favoritmovieprovider.TERMS_READ"/>
 
     <application
         android:allowBackup="true"
@@ -25,6 +26,11 @@
         <activity android:name=".presentation.moviegallery.MovieGalleryActivity"/>
 
         <activity android:name=".presentation.moviereview.MovieReviewActivity"/>
+
+        <provider
+            android:name="udacity.winni.popsmovie.data.local.MovieContentProvider"
+            android:authorities="udacity.winni.popsmovie"
+            android:exported="false"/>
 
     </application>
 
