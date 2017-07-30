@@ -34,8 +34,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_MOVIE_TABLE = "CREATE TABLE " + MovieContract.MovieEntry.TABLE_MOVIE + "("
-            + MovieEntry.COLUMN_ID + " TEXT PRIMARY KEY," + MovieContract.MovieEntry.COLUMN_TITLE + " TEXT," +
-            MovieContract.MovieEntry.COLUMN_ORIGINAL_TITLE + " TEXT," + MovieEntry.COLUMN_POSTER_PATH + " TEXT)";
+            + MovieEntry.COLUMN_ID + " TEXT PRIMARY KEY," + MovieContract.MovieEntry.COLUMN_TITLE
+            + " TEXT," +
+            MovieContract.MovieEntry.COLUMN_ORIGINAL_TITLE + " TEXT," + MovieEntry
+            .COLUMN_POSTER_PATH + " TEXT)";
         db.execSQL(CREATE_MOVIE_TABLE);
     }
 
@@ -78,31 +80,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }
 
             }
-
-//            @Override
-//            public void call(Subscriber<? super MovieList> subscriber) {
-//                try {
-//                    String result = doSomeTimeTakingIoOperation();
-//                    subscriber.onNext(result);    // Pass on the data to subscriber
-//                    subscriber.onCompleted();     // Signal about the completion subscriber
-//                } catch (Exception e) {
-//                    subscriber.onError(e);        // Signal about the error to subscriber
-//                }
-//            }
         });
-
-//        return Observable.create(new ObservableOnSubscribe<MovieList>() {
-//            @Override
-//            public void subscribe(ObservableEmitter<MovieList> emitter) throws Exception {
-//                try {
-//                    for (Todo todo : todos) {
-//                        emitter.onNext(todo);
-//                    }
-//                    emitter.onComplete();
-//                } catch (Exception e) {
-//                    emitter.onError(e);
-//                }
-//            }
-//        });
     }
 }

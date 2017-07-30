@@ -204,7 +204,7 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
                     movieGalleryPresenter.getPopularMovies();
                 } else if (loadMore && (galleryMode == TOP_RATED_MODE)) {
                     movieGalleryPresenter.getTopRatedMovies();
-                } else if (loadMore && (galleryMode == TOP_RATED_MODE)) {
+                } else if (loadMore && (galleryMode == FAVORITE_MODE)) {
                     movieGalleryPresenter.getFavoriteMovies();
                 }
             }
