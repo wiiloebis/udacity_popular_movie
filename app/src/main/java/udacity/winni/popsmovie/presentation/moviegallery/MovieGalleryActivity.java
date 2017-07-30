@@ -33,6 +33,8 @@ import udacity.winni.popsmovie.presentation.moviedetail.MovieDetailActivity;
 public class MovieGalleryActivity extends AppCompatActivity implements MovieGalleryContract.View,
     MovieAdapter.OnItemClickedListener {
 
+    public static String LOAD_MORE = "LOAD_MORE";
+
     public static String MOVIES = "MOVIES";
 
     public static String SCREEN_TITLE = "SCREEN_TITLE";
@@ -98,6 +100,7 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
             screenTitle = savedInstanceState.getString(SCREEN_TITLE);
             int currentPage = savedInstanceState.getInt(CURRENT_PAGE);
             movieGalleryPresenter.setPage(currentPage);
+            loadMore = savedInstanceState.getBoolean(LOAD_MORE);
             galleryMode = savedInstanceState.getInt(GALLERY_MODE);
         }
     }
@@ -125,6 +128,7 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
         outState.putString(SCREEN_TITLE, screenTitle);
         outState.putInt(CURRENT_PAGE, movieGalleryPresenter.getCurrentPage());
         outState.putInt(GALLERY_MODE, galleryMode);
+        outState.putBoolean(LOAD_MORE, loadMore);
         super.onSaveInstanceState(outState);
     }
 

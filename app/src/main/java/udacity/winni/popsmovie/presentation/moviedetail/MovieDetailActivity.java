@@ -47,6 +47,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     private static final int DIV_FACTOR = 10;
 
+    private static final String MOVIE_TRAILERS = "MOVIE_TRAILERS";
+
     public static String MOVIE_ID = "MOVIE_ID";
 
     public static String MOVIE_FAVORITED_STATUS = "MOVIE_FAVORITED_STATUS";
@@ -54,8 +56,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     public static int OPEN_DETAIL_ACTVITY = 10;
 
     public static String MOVIE = "MOVIE";
-
-    private static final String VIDEO_ID = "VIDEO_ID";
 
     @BindView(R.id.tv_movie_title)
     TextView tvMovieTitle;
@@ -103,6 +103,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     private boolean movieFavoriteStatusChanged = false;
 
+    private List<MovieTrailerVM> movieTrailerVMs;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,11 +120,15 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             ApplicationComponent.provideRemoveFavoriteMovie(),
             ApplicationComponent.provideCheckIfMovieFavorited(),
             new MovieMapper(), new MovieVideoMapper());
+
         if (savedInstanceState == null || !savedInstanceState.containsKey(MOVIE)) {
             getMovieDetailFromId();
         } else {
             movie = savedInstanceState.getParcelable(MOVIE);
             onGetMovieDetailSuccess(movie);
+            movieTrailerVMs = savedInstanceState.getParcelableArrayList(MOVIE_TRAILERS);
+            onGetMovieTrailersSuccess(movieTrailerVMs);
+            movieId = savedInstanceState.getLong(MOVIE_ID);
         }
     }
 
@@ -144,6 +150,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(MOVIE_TRAILERS, new ArrayList<>(movieTrailerAdapter.getData()));
         outState.putParcelable(MOVIE, movie);
         super.onSaveInstanceState(outState);
     }
@@ -207,7 +214,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     public void onBackPressed() {
         Intent intent = new Intent();
         intent.putExtra(MOVIE_FAVORITED_STATUS, movieFavoriteStatusChanged);
-        if(movieFavoriteStatusChanged) {
+        if (movieFavoriteStatusChanged) {
             setResult(RESULT_OK, intent);
         }
         finish();
@@ -261,6 +268,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onGetMovieTrailersSuccess(List<MovieTrailerVM> movieTrailerVMs) {
+        this.movieTrailerVMs = movieTrailerVMs;
         rlMovieDetailFailed.setVisibility(View.GONE);
         rlMovieDetailSuccess.setVisibility(View.VISIBLE);
         movieTrailerAdapter.resetData(movieTrailerVMs);
