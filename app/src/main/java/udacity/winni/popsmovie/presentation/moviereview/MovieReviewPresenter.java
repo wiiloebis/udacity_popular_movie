@@ -59,7 +59,12 @@ public class MovieReviewPresenter implements MovieReviewContract.Presenter {
                     .transform(movieReviewList.getMovieReviews());
                 view.hideLoadingBar();
                 if (movieReviewVms != null) {
-                    view.onGetMovieReviewsSuccess(movieReviewVms);
+                    boolean loadMore = true;
+                    if (movieReviewList.getPage() < movieReviewList.getTotalPage()) {
+                        loadMore = false;
+                    }
+
+                    view.onGetMovieReviewsSuccess(movieReviewVms, loadMore);
                     page = movieReviewList.getPage() + 1;
                 } else {
                     view.onGetMovieReviewsFailed();

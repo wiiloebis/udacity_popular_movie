@@ -220,7 +220,7 @@ public class MovieGalleryActivity extends AppCompatActivity implements MovieGall
     public void onGetMoviesFailed() {
         rvMovie.setVisibility(View.GONE);
         tvFailMessage.setVisibility(View.VISIBLE);
-        tvFailMessage.setText(getString(R.string.fetch_movie_failed));
+        tvFailMessage.setText(getString(R.string.fetch_movies_failed));
     }
 
     @Override

@@ -12,10 +12,13 @@ public class MovieReviewList {
 
     private int page;
 
+    private int totalPage;
+
     private List<MovieReview> movieReviews;
 
-    public MovieReviewList(int page, List<MovieReview> result) {
+    public MovieReviewList(int page, int totalPage, List<MovieReview> result) {
         this.page = page;
+        this.totalPage = totalPage;
         this.movieReviews = result;
     }
 
@@ -37,5 +40,13 @@ public class MovieReviewList {
 
     public int getId() {
         return id;
+    }
+
+    public int getTotalPage() {
+        return totalPage;
+    }
+
+    public void setTotalPage(int totalPage) {
+        this.totalPage = totalPage;
     }
 }

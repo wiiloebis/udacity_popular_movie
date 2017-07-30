@@ -114,7 +114,7 @@ public class RetrofitRestApiImpl implements RestApi {
     public Observable<MovieReviewList> getMovieReviews(String url, Map<String, String> query) {
         return apiService.getMovieReviews(url, query)
             .observeOn(AndroidSchedulers.mainThread())
-            .map(response -> new MovieReviewList(response.getPage(), response.getResults()))
+            .map(response -> new MovieReviewList(response.getTotalPages(), response.getPage(), response.getResults()))
             .subscribeOn(Schedulers.io());
     }
 

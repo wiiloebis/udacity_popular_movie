@@ -5,7 +5,8 @@
     <string name="popular">Popular</string>
     <string name="refresh">Refresh</string>
     <string name="fetch_movie_detail_failed">Failed to get movie detail, please try again.</string>
-    <string name="fetch_movie_failed">Failed to movieReviews, please try again.</string>
+    <string name="fetch_movies_failed">Failed to movies, please try again.</string>
+    <string name="fetch_reviews_failed">Failed to reviews, please try again.</string>
     <string name="pop_movies_title">Popular Movies</string>
     <string name="favorite_movies_title">Favorite Movies</string>
     <string name="top_rated_movies_title">Top Rated Movies</string>
@@ -17,5 +18,7 @@
     <string name="review">Review</string>
     <string name="movie_review">Moview Review</string>
     <string name="favorite">Favorite</string>
-    <string name="video_cannot_be_played">Video cannot be played due to support unavailability. Please install a browser or youtube app.</string>
+    <string name="video_cannot_be_played">Video cannot be played due to support unavailability.
+        Please install a browser or youtube app.
+    </string>
 </resources>

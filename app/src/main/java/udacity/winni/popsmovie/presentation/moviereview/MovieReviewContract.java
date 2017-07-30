@@ -15,7 +15,7 @@ public interface MovieReviewContract {
 
     interface View extends BaseView {
 
-        void onGetMovieReviewsSuccess(List<MovieReviewVM> movieReviews);
+        void onGetMovieReviewsSuccess(List<MovieReviewVM> movieReviews, boolean loadMore);
 
         void onGetMovieReviewsFailed();
 

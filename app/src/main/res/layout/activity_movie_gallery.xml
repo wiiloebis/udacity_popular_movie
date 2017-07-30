@@ -18,7 +18,7 @@
         android:gravity="center"
         android:textColor="@color/paleGrey"
         android:textSize="@dimen/font_30"
-        android:text="@string/fetch_movie_failed"
+        android:text="@string/fetch_movies_failed"
         android:visibility="gone">
     </TextView>
 

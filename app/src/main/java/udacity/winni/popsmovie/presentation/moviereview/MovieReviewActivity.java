@@ -36,6 +36,8 @@ public class MovieReviewActivity extends AppCompatActivity implements MovieRevie
 
     public static String CURRENT_PAGE = "CURRENT_PAGE";
 
+    public static String LOAD_MORE = "LOAD_MORE";
+
     private MovieReviewPresenter movieReviewPresenter;
 
     private MovieReviewAdapter movieReviewAdapter;
@@ -54,14 +56,14 @@ public class MovieReviewActivity extends AppCompatActivity implements MovieRevie
 
     private List<MovieReviewVM> movieReviews;
 
-    private boolean loadMore = true;
+    private boolean loadMore = false;
 
     private long movieId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_gallery);
+        setContentView(R.layout.activity_movie_review);
         ButterKnife.bind(this);
         movieReviewPresenter = new MovieReviewPresenter(this,
             ApplicationComponent.provideGetMovieReviews(), new MovieReviewMapper());
@@ -77,6 +79,8 @@ public class MovieReviewActivity extends AppCompatActivity implements MovieRevie
             movieReviews = savedInstanceState.getParcelableArrayList(MOVIES_REVIEW);
             movieReviewAdapter.resetData(movieReviews);
             int currentPage = savedInstanceState.getInt(CURRENT_PAGE);
+            movieId = savedInstanceState.getLong(MOVIE_ID);
+            loadMore = savedInstanceState.getBoolean(LOAD_MORE);
             movieReviewPresenter.setPage(currentPage);
         }
     }
@@ -92,6 +96,8 @@ public class MovieReviewActivity extends AppCompatActivity implements MovieRevie
         outState
             .putParcelableArrayList(MOVIES_REVIEW, new ArrayList<>(movieReviewAdapter.getData()));
         outState.putInt(CURRENT_PAGE, movieReviewPresenter.getCurrentPage());
+        outState.putLong(MOVIE_ID, movieId);
+        outState.putBoolean(LOAD_MORE, loadMore);
         super.onSaveInstanceState(outState);
     }
 
@@ -130,23 +136,19 @@ public class MovieReviewActivity extends AppCompatActivity implements MovieRevie
     }
 
     @Override
-    public void onGetMovieReviewsSuccess(List<MovieReviewVM> movieReviews) {
+    public void onGetMovieReviewsSuccess(List<MovieReviewVM> movieReviews, boolean loadMore) {
         this.movieReviews = movieReviews;
         rvMovieReview.setVisibility(View.VISIBLE);
         tvFailMessage.setVisibility(View.GONE);
         movieReviewAdapter.addData(this.movieReviews);
-        if (!this.movieReviews.isEmpty()) {
-            loadMore = true;
-        } else {
-            loadMore = false;
-        }
+        this.loadMore = loadMore;
     }
 
     @Override
     public void onGetMovieReviewsFailed() {
         rvMovieReview.setVisibility(View.GONE);
         tvFailMessage.setVisibility(View.VISIBLE);
-        tvFailMessage.setText(getString(R.string.fetch_movie_failed));
+        tvFailMessage.setText(getString(R.string.fetch_reviews_failed));
     }
 
     @Override
