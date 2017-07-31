@@ -58,7 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 sortOrder);
     }
 
-    public Long addFavoriteMovie(ContentValues contentValues) {
+    public long addFavoriteMovie(ContentValues contentValues) {
         SQLiteDatabase db = getWritableDatabase();
         return movieContract.addFavoriteMovie(contentValues, db);
     }

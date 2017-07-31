@@ -9,6 +9,9 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import udacity.winni.popsmovie.data.LocalApi;
+import udacity.winni.popsmovie.data.source.local.SqliteLocalApiImpl;
+
 /**
  * Created by winniseptiani on 7/30/17.
  */
@@ -31,14 +34,11 @@ public class MovieContentProvider extends ContentProvider {
         return uriMatcher;
     }
 
-    private DatabaseHelper dbHelper;
-
-    private MovieContract movieTable;
+    private LocalApi localApi;
 
     @Override
     public boolean onCreate() {
-        movieTable = new MovieContract();
-        dbHelper = new DatabaseHelper(getContext(), movieTable);
+        localApi = new SqliteLocalApiImpl(getContext());
         return true;
     }
 
@@ -52,7 +52,7 @@ public class MovieContentProvider extends ContentProvider {
 
         switch (match) {
             case MOVIES:
-                retCursor = dbHelper
+                retCursor = localApi
                     .getFavoriteMovies(projection, selection, selectionArgs, sortOrder);
                 break;
             default:
@@ -77,7 +77,7 @@ public class MovieContentProvider extends ContentProvider {
 
         switch (match) {
             case MOVIES:
-                long id = dbHelper.addFavoriteMovie(values);
+                long id = localApi.insertFavoriteMovie(values);
                 if (id > 0) {
                     returnUri = ContentUris
                         .withAppendedId(MovieContract.MovieEntry.CONTENT_URI, id);
@@ -103,7 +103,7 @@ public class MovieContentProvider extends ContentProvider {
         switch (match) {
             case MOVIE_WITH_ID:
                 String id = uri.getPathSegments().get(1);
-                movieDeleted = dbHelper.deleteFavoriteMovie(id);
+                movieDeleted = localApi.deleteFavoriteMovie(id);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

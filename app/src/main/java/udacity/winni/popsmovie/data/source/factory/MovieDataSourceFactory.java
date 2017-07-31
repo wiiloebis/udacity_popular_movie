@@ -20,7 +20,6 @@ public class MovieDataSourceFactory {
     }
 
     public MovieDataSource createLocalDataSource() {
-        LocalApi localApi = new SqliteLocalApiImpl();
-        return new LocalMovieDataSource(localApi);
+        return new LocalMovieDataSource();
     }
 }
